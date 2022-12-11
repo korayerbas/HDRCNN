@@ -41,7 +41,8 @@ import os, sys
 import tensorflow as tf
 import tensorlayer as tl
 import numpy as np
-import network, img_io
+import networkx
+import imageio as img_io
 
 eps = 1e-5
 
@@ -62,14 +63,14 @@ def print_(str, color='', bold=False):
 
 
 # Settings, using TensorFlow arguments
-FLAGS = tf.flags.FLAGS
-tf.flags.DEFINE_integer("width", "1024", "Reconstruction image width")
-tf.flags.DEFINE_integer("height", "768", "Reconstruction image height")
-tf.flags.DEFINE_string("im_dir", "data", "Path to image directory or an individual image")
-tf.flags.DEFINE_string("out_dir", "out", "Path to output directory")
-tf.flags.DEFINE_string("params", "hdrcnn_params.npz", "Path to trained CNN weights")
-tf.flags.DEFINE_float("scaling", "1.0", "Pre-scaling, which is followed by clipping, in order to remove compression artifacts close to highlights")
-tf.flags.DEFINE_float("gamma", "1.0", "Gamma/exponential curve applied before, and inverted after, prediction. This can be used to control the boost of reconstructed pixels.")
+FLAGS = tf.compat.v1.flags.Flag
+tf.compat.v1.flags.DEFINE_integer("width", "1024", "Reconstruction image width")
+tf.compat.v1.flags.DEFINE_integer("height", "768", "Reconstruction image height")
+tf.compat.v1.flags.DEFINE_integer("im_dir", "data", "Path to image directory or an individual image")
+tf.compat.v1.flags.DEFINE_integer("out_dir", "out", "Path to output directory")
+tf.compat.v1.flags.DEFINE_integer("params", "hdrcnn_params.npz", "Path to trained CNN weights")
+tf.compat.v1.flags.DEFINE_integer("scaling", "1.0", "Pre-scaling, which is followed by clipping, in order to remove compression artifacts close to highlights")
+tf.compat.v1.flags.DEFINE_integer("gamma", "1.0", "Gamma/exponential curve applied before, and inverted after, prediction. This can be used to control the boost of reconstructed pixels.")
 
 # Round to be multiple of 32, so that autoencoder pooling+upsampling
 # yields same size as input image
