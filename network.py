@@ -46,7 +46,7 @@ def model(x, batch_size=1, is_training=False):
 
     # Encoder network (VGG16, until pool5)
     x_in = tf.scalar_mul(255.0, x)
-    net_in = tl.layers.InputLayer(x_in, name='input_layer')
+    net_in = tl.layers.Input(x_in, name='input_layer')
     conv_layers, skip_layers = encoder(net_in)
 
     # Fully convolutional layers on top of VGG16 conv layers
