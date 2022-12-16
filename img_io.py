@@ -38,8 +38,10 @@
 
 
 import numpy as np
-import scipy.misc
+#import scipy.misc
+import imageio
 import OpenEXR, Imath
+from PIL import Image
 
 class IOException(Exception):
     def __init__(self, value):
@@ -50,7 +52,7 @@ class IOException(Exception):
 # Read and prepare 8-bit image in a specified resolution
 def readLDR(file, sz, clip=True, sc=1.0):
     try:
-        x_buffer = scipy.misc.imread(file)
+        x_buffer =  imageio.imread(file)
 
         # Clip image, so that ratio is not changed by image resize
         if clip:
@@ -73,9 +75,12 @@ def readLDR(file, sz, clip=True, sc=1.0):
             x_buffer = x_buffer[int(yo):int(yo+sy),int(xo):int(xo+sx),:]
 
         # Image resize and conversion to float
-        x_buffer = scipy.misc.imresize(x_buffer, sz)
-        x_buffer = x_buffer.astype(np.float32)/255.0
-
+        #x_buffer = scipy.misc.imresize(x_buffer, sz)
+        #x_buffer = x_buffer.astype(np.float32)/255.0
+        im = Image.fromarray(x_buffer)
+        size = tuple((np.array(im.size) * 0.99999).astype(int))
+        x_buffer = np.float32(np.array(im.resize(sz, Image.BICUBIC))/255)
+      
         # Scaling and clipping
         if sc > 1.0:
             x_buffer = np.minimum(1.0, sc*x_buffer)
