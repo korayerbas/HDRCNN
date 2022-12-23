@@ -347,22 +347,21 @@ def deconv_layer(input_layer, sz, str, alpha, is_training=False):
 
     #init_matrix = tf.constant_initializer(value=weights, dtype=tf.float32)
     init_matrix = tf.constant_initializer(value=weights)
-    #network = tl.layers.DeConv2dLayer(input_layer,
-    #                            shape = [filter_size, filter_size, num_out_channels, num_in_channels],
-    #                            output_shape = [sz[0], sz[1]*scale, sz[2]*scale, num_out_channels],
-    #                            strides=[1, scale, scale, 1],
+    network = tl.layers.DeConv2dLayer(shape = [kernel_size, kernel_size, num_out_channels, num_in_channels],
+                                outputs_shape = [sz[0], sz[1]*scale, sz[2]*scale, num_out_channels],
+                                strides=[1, scale, scale, 1],
+                                W_init=init_matrix,
+                                padding='SAME',
+                                act = tf.identity,
+                                name=str)(input_layer)
+    #network = tl.layers.DeConv2d(n_filter = num_out_channels,
+    #                            filter_size  = (kernel_size, kernel_size),
+    #                            in_channels = num_in_channels,
+    #                            strides=(scale, scale),
     #                            W_init=init_matrix,
     #                            padding='SAME',
     #                            act=tf.identity,
-    #                            name=str)
-    network = tl.layers.DeConv2d(n_filter = num_out_channels,
-                                filter_size  = (kernel_size, kernel_size),
-                                in_channels = num_in_channels,
-                                strides=(scale, scale),
-                                W_init=init_matrix,
-                                padding='SAME',
-                                act=tf.identity,
-                                name=str)(input_layer)
+    #                            name=str)(input_layer)
     #network = tf.keras.layers.Conv2DTranspose(filters = num_out_channels,
     #                  kernel_size = (filter_size,filter_size),
     #                  strides = (scale,scale),
