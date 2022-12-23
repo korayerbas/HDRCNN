@@ -42,6 +42,7 @@ import numpy as np
 import imageio
 import OpenEXR, Imath
 from PIL import Image
+import toimage_util
 
 class IOException(Exception):
     def __init__(self, value):
@@ -99,7 +100,10 @@ def writeLDR(img, file, exposure=0):
     sc = np.power(np.power(2.0, exposure), 0.5)
 
     try:
-        scipy.misc.toimage(sc*np.squeeze(img), cmin=0.0, cmax=1.0).save(file)
+        #scipy.misc.toimage(sc*np.squeeze(img), cmin=0.0, cmax=1.0).save(file)
+        toimage_img = toimage_util.toimage(sc*np.squeeze(img), cmin=0.0, cmax=1.0)
+        imageio.imwrite(file,toimage_img)
+
     except Exception as e:
         raise IOException("Failed writing LDR image: %s"%e)
 
@@ -138,6 +142,6 @@ def load_training_pair(name_hdr, name_jpg):
     y = np.reshape(data[meta_length:meta_length+npix], (sz[0], sz[1], sz[2]))
 
     # Read JPEG LDR image
-    x = scipy.misc.imread(name_jpg).astype(np.float32)/255.0
-
+    #x = scipy.misc.imread(name_jpg).astype(np.float32)/255.0
+    x = imageio.imread(name_jpg).astype(np.float32)/255.0
     return (True,x,y)
