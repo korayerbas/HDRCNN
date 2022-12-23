@@ -1,68 +1,66 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+
 import tensorflow as tf
 
 import tensorlayer as tl
 from tensorlayer import logging
 from tensorlayer.decorators import deprecated_alias
 from tensorlayer.layers.core import Layer
+from tensorlayer.layers.core import LayersConfig
 
-# from tensorlayer.layers.core import LayersConfig
-
-__all__ = [
-    'DeConv1dLayer',
-    'DeConv2dLayer',
-    'DeConv3dLayer',
-]
+__all__ = ['DeConv1dLayer','DeConv2dLayer','DeConv3dLayer']
 
 class DeConv2dLayer(Layer):
-    """A de-convolution 2D layer.
-    See `tf.nn.conv2d_transpose <https://tensorflow.google.cn/versions/r2.0/api_docs/python/tf/nn/conv2d_transpose>`__.
-    Parameters
-    ----------
-    act : activation function or None
-        The activation function of this layer.
-    shape : tuple of int
-        Shape of the filters: (height, width, output_channels, in_channels).
-        The filter's ``in_channels`` dimension must match that of value.
-    outputs_shape : tuple of int
-        Output shape of the deconvolution,
-    strides : tuple of int
-        The sliding window strides for corresponding input dimensions.
-    padding : str
-        The padding algorithm type: "SAME" or "VALID".
-    data_format : str
-        "NHWC" or "NCHW", default is "NHWC".
-    dilation_rate : tuple of int
-        Filter up-sampling/input down-sampling rate.
-    W_init : initializer
-        The initializer for the weight matrix.
-    b_init : initializer or None
-        The initializer for the bias vector. If None, skip biases.
-    name : None or str
-        A unique layer name.
-    Notes
-    -----
-    - shape = [h, w, the number of output channels of this layer, the number of output channel of the previous layer].
-    - outputs_shape = [batch_size, any, any, the number of output channels of this layer].
-    - the number of output channel of a layer is its last dimension.
-    Examples
-    --------
-    With TensorLayer
-    TODO: Add the example code of a part of the generator in DCGAN example
-    U-Net
-    >>> ....
-    >>> conv10 = tl.layers.Conv2dLayer(
-    ...        act=tf.nn.relu,
-    ...        shape=(3, 3, 1024, 1024), strides=(1, 1, 1, 1), padding='SAME',
-    ...        W_init=w_init, b_init=b_init, name='conv10'
-    ... )(conv9)
-    >>> print(conv10)
-    (batch_size, 32, 32, 1024)
-    >>> deconv1 = tl.layers.DeConv2dLayer(
-    ...         act=tf.nn.relu,
-    ...         shape=(3, 3, 512, 1024), strides=(1, 2, 2, 1), outputs_shape=(batch_size, 64, 64, 512),
-    ...         padding='SAME', W_init=w_init, b_init=b_init, name='devcon1_1'
-    ... )(conv10)
-    """
+    #A de-convolution 2D layer.
+    #See `tf.nn.conv2d_transpose <https://tensorflow.google.cn/versions/r2.0/api_docs/python/tf/nn/conv2d_transpose>`__.
+    #Parameters
+    #----------
+    #act : activation function or None
+    #    The activation function of this layer.
+    #shape : tuple of int
+    #    Shape of the filters: (height, width, output_channels, in_channels).
+    #    The filter's ``in_channels`` dimension must match that of value.
+    #outputs_shape : tuple of int
+    #    Output shape of the deconvolution,
+    #strides : tuple of int
+    #    The sliding window strides for corresponding input dimensions.
+    #padding : str
+    #    The padding algorithm type: "SAME" or "VALID".
+    #data_format : str
+    #    "NHWC" or "NCHW", default is "NHWC".
+    #dilation_rate : tuple of int
+    #    Filter up-sampling/input down-sampling rate.
+    #W_init : initializer
+    #    The initializer for the weight matrix.
+    #b_init : initializer or None
+    #    The initializer for the bias vector. If None, skip biases.
+    #name : None or str
+    #    A unique layer name.
+    #Notes
+    #-----
+    #- shape = [h, w, the number of output channels of this layer, the number of output channel of the previous layer].
+    #- outputs_shape = [batch_size, any, any, the number of output channels of this layer].
+    #- the number of output channel of a layer is its last dimension.
+    #Examples
+    #--------
+    #With TensorLayer
+    #TODO: Add the example code of a part of the generator in DCGAN example
+    #U-Net
+    #>>> ....
+    #conv10 = tl.layers.Conv2dLayer(
+    #...        act=tf.nn.relu,
+    #...        shape=(3, 3, 1024, 1024), strides=(1, 1, 1, 1), padding='SAME',
+    #...        W_init=w_init, b_init=b_init, name='conv10'
+    #... )(conv9)
+    #>>> print(conv10)
+    #(batch_size, 32, 32, 1024)
+    #>>> deconv1 = tl.layers.DeConv2dLayer(
+    #...         act=tf.nn.relu,
+    #...         shape=(3, 3, 512, 1024), strides=(1, 2, 2, 1), outputs_shape=(batch_size, 64, 64, 512),
+    #...         padding='SAME', W_init=w_init, b_init=b_init, name='devcon1_1'
+    #... )(conv10)
+    #"""
 
     def __init__(
         self,
