@@ -40,7 +40,7 @@
 import tensorflow as tf
 import tensorlayer as tl
 import numpy as np
-
+import deconv2d
 # The HDR reconstruction autoencoder fully convolutional neural network
 
 def model(x, batch_size=1, is_training=False):
