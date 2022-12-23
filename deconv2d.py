@@ -7,7 +7,6 @@ import tensorlayer as tl
 from tensorlayer import logging
 from tensorlayer.decorators import deprecated_alias
 from tensorlayer.layers.core import Layer
-from tensorlayer.layers.core import LayersConfig
 
 __all__ = ['DeConv1dLayer','DeConv2dLayer','DeConv3dLayer']
 
@@ -65,12 +64,12 @@ class DeConv2dLayer(Layer):
     def __init__(
         self,
         act=None,
-        shape=(3, 3, 128, 256),
-        outputs_shape=(1, 256, 256, 128),
-        strides=(1, 2, 2, 1),
+        shape=[3, 3, 128, 256],
+        outputs_shape=[1, 256, 256, 128],
+        strides=[1, 2, 2, 1],
         padding='SAME',
-        data_format='NHWC',
-        dilation_rate=(1, 1, 1, 1),
+        data_format=None,
+        dilation_rate=[1, 1, 1, 1],
         W_init=tl.initializers.truncated_normal(stddev=0.02),
         b_init=tl.initializers.constant(value=0.0),
         name=None  # 'decnn2d_layer',
