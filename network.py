@@ -317,9 +317,11 @@ def skip_connection_layer(input_layer, skip_layer, str, is_training):
 
 # Deconvolution layer
 def deconv_layer(input_layer, sz, str, alpha, is_training=False):
+    print('deconv_layer input_layer: \n',input_layer)
     scale = 2
     print('sz: \n',sz)
-    kernel_size = (2 * scale - scale % 2)
+    print('str: \n', str)
+    kernel_size = (2 * scale - scale % 2); print('kernel_size: \n', kernel_size)
     num_in_channels = int(sz[3])
     num_out_channels = int(sz[4])
 
@@ -337,6 +339,11 @@ def deconv_layer(input_layer, sz, str, alpha, is_training=False):
     weights = np.zeros((kernel_size, kernel_size, num_out_channels, num_in_channels))
     for i in range(num_out_channels):
         weights[:, :, i, i] = bilinear_kernel
+    
+    output_shape = [sz[0], sz[1]*scale, sz[2]*scale, num_out_channels]
+    print('output_shape: \n',output_shape)
+    shape = [kernel_size, kernel_size, num_out_channels, num_in_channels]
+    print('shape: \n',shape)
 
     #init_matrix = tf.constant_initializer(value=weights, dtype=tf.float32)
     init_matrix = tf.constant_initializer(value=weights)
@@ -349,7 +356,7 @@ def deconv_layer(input_layer, sz, str, alpha, is_training=False):
     #                            act=tf.identity,
     #                            name=str)
     network = tl.layers.DeConv2d(n_filter = num_out_channels,
-                                filter_size  = (kernel_size,kernel_size),
+                                filter_size  = (kernel_size, kernel_size),
                                 in_channels = num_in_channels,
                                 strides=(scale, scale),
                                 W_init=init_matrix,
@@ -362,6 +369,7 @@ def deconv_layer(input_layer, sz, str, alpha, is_training=False):
     #                  padding='same',
     #                  activation= tf.identity,
     #                  kernel_initializer=init_matrix)(input_layer)
+
     network = tl.layers.BatchNorm2d(is_train=is_training, name='%s/batch_norm_dc'%str)(network)
     network = tf.maximum(alpha*network, network, name='%s/leaky_relu_dc'%str)
 
